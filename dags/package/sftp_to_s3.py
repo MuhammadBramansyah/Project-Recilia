@@ -225,16 +225,18 @@ class EmailReminderToIFS:
 
         list_bank_name_df = df_ebs['Bank Name'].unique().tolist()
         list_main = ['Mandiri','BNI','BCA']
-        list_collect = list(set(list_main) - set(list_bank_name_df))
-        
-        if not (list_collect):    
-            logging.info("All data EBS has been uploaded to recillia")
+        if list_collect := list(set(list_main) - set(list_bank_name_df)):
+            self._extracted_from_email_reminder_ifs_28(list_collect, q_date)
         else:
-            df_main = self.dataframe_factory.dataframe_creator(list_collect)
-            df_main['Tanggal EBS'] = q_date
-            df_main["Tanggal EBS"] = pd.to_datetime(df_main["Tanggal EBS"])
-            df_main["Tanggal EBS"] = df_main["Tanggal EBS"].dt.strftime("%d/%m/%Y")
-
-            receiver = self.list_email_altert()
-            send_email_reminder_to_ifs(receiver, "Email Reminder Daily", df_main)
+            logging.info("All data EBS has been uploaded to recillia")
         return logging.info("Process Done")
+
+    # TODO Rename this here and in `email_reminder_ifs`
+    def _extracted_from_email_reminder_ifs_28(self, list_collect, q_date):
+        df_main = self.dataframe_factory.dataframe_creator(list_collect)
+        df_main['Tanggal EBS'] = q_date
+        df_main["Tanggal EBS"] = pd.to_datetime(df_main["Tanggal EBS"])
+        df_main["Tanggal EBS"] = df_main["Tanggal EBS"].dt.strftime("%d/%m/%Y")
+
+        receiver = self.list_email_altert()
+        send_email_reminder_to_ifs(receiver, "Email Reminder Daily", df_main)

@@ -7,7 +7,7 @@ from airflow.models import Variable
 import logging 
 logging.basicConfig(level=logging.INFO)
 
-from package.sftp_to_s3_func import SftpToS3, EmailReminderToIFS
+from package.sftp_to_s3 import SftpToS3, EmailReminderToIFS
 
 ## sftp path
 ebs_path = Variable.get("EBS_SFTP_PATH")
