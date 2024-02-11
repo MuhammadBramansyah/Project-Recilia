@@ -1,8 +1,5 @@
-FROM apache/airflow:2.3.2
-USER root
-RUN apt-get update \
-    && apt-get install -y vim 
-USER airflow
+FROM apache/airflow:2.8.0
 COPY requirements.txt /requirements.txt
 RUN pip install --user --upgrade pip
-RUN pip install --no-cache-dir --user -r /requirements.txt
+# RUN pip install --no-cache-dir --user -r /requirements.txt
+RUN pip install -r /requirements.txt
